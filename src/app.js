@@ -10,16 +10,18 @@ window.onload = function() {};
 var arrayCards = [];
 let btnDraw = document.getElementById("btn-draw");
 var icons = ["♦", "♥", "♠", "♣"];
-var numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, "K", "Q", "J", "AS"];
+var numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, "K", "Q", "J", "A"];
 btnDraw.addEventListener("click", function(event) {
   event.preventDefault();
+  arrayCards = [];
   //obtengo valor de input
   var input1 = document.getElementById("input1");
   //obtengo las dos filas
   var row1 = document.getElementById("row1");
   var row2 = document.getElementById("row2");
   row1.innerHTML = "";
-  if (input1.value <= 8) {
+  row2.innerHTML = "";
+  if (input1.value <= 8 && input1.value > 0) {
     //creo cartas segun cantidad ingresada en el input y las agrego a la fila
     for (var i = 0; i < input1.value; i++) {
       //creo numeros dinamicos
@@ -88,11 +90,23 @@ const bubbleSort = arr => {
     let index = 0;
     while (index < wall) {
       //comparar las posiciones adyacentes, si la correcta es más grande, tenemos que intercambiar
-      if (arr[index] > arr[index + 1]) {
+      if (
+        arr[index][1] == "K" ||
+        arr[index][1] == "Q" ||
+        arr[index][1] == "J" ||
+        arr[index][1] == "A"
+      ) {
         let aux = arr[index];
         arr[index] = arr[index + 1];
         arr[index + 1] = aux;
+      } else {
+        if (arr[index][1] > arr[index + 1][1]) {
+          let aux = arr[index];
+          arr[index] = arr[index + 1];
+          arr[index + 1] = aux;
+        }
       }
+
       index++;
     }
     wall--; //disminuir la pared para optimizar
@@ -100,8 +114,144 @@ const bubbleSort = arr => {
   return arr;
 };
 
+const selectSort = arr => {
+  let min = 0;
+  while (min < arr.length - 1) {
+    for (let i = min + 1; i <= arr.length - 1; i++) {
+      if (
+        arr[min][1] == "K" ||
+        arr[min][1] == "Q" ||
+        arr[min][1] == "J" ||
+        arr[min][1] == "A"
+      ) {
+        let aux = arr[min];
+        arr[min] = arr[i];
+        arr[i] = aux;
+      } else {
+        if (arr[min][1] > arr[i][1]) {
+          let aux = arr[min];
+          arr[min] = arr[i];
+          arr[i] = aux;
+        }
+      }
+    }
+    min++;
+  }
+  return arr;
+};
+
 let btnBubble = document.getElementById("btn-bubble");
 btnBubble.addEventListener("click", function(event) {
   event.preventDefault();
-  console.log(bubbleSort(arrayCards));
+  var newArray = bubbleSort(arrayCards);
+  var row2 = document.getElementById("row2");
+  row2.innerHTML = "";
+  for (var i = 0; i < newArray.length; i++) {
+    //creo columna
+    let col = document.createElement("div");
+    col.classList = "col-1.9 pl-2";
+    //creo carta
+    let card = document.createElement("div");
+    card.classList.add("bg-white", "card");
+    //creo estructura head, body, footer de la carta
+    //footer
+    let div1 = document.createElement("div");
+    div1.classList.add("justify-content-start", "ml-1", "header");
+    var pHeader = document.createElement("p");
+    pHeader.id = "header";
+    pHeader.innerHTML = newArray[i][0];
+    div1.appendChild(pHeader);
+    card.appendChild(div1);
+    //body
+    let div2 = document.createElement("div");
+    div2.classList.add(
+      "d-flex",
+      "justify-content-center",
+      "font-weight-bold",
+      "body"
+    );
+    var pBody = document.createElement("p");
+    pBody.id = "body";
+    pBody.innerHTML = "<b>" + newArray[i][1] + "</b>";
+    div2.appendChild(pBody);
+    card.appendChild(div2);
+    //footer
+    let div3 = document.createElement("div");
+    div3.classList.add("d-flex", "justify-content-end", "mr-1", "footer");
+    let subDiv = document.createElement("div");
+    subDiv.classList.add("f");
+    var pFooter = document.createElement("p");
+    pFooter.id = "footer";
+    pFooter.innerHTML = newArray[i][0];
+    subDiv.appendChild(pFooter);
+    div3.appendChild(subDiv);
+    card.appendChild(div3);
+    //Si es corazon o diamante coloreo en rojo
+    if (newArray[i][0] == "♥" || newArray[i][0] == "♦") {
+      pHeader.style.color = "red";
+      pFooter.style.color = "red";
+    }
+    //agrego carta a la columna
+    col.appendChild(card);
+    //agrego columna a la fila
+    row2.append(col);
+  }
+});
+
+let btnSelect = document.getElementById("btn-select");
+btnSelect.addEventListener("click", function() {
+  event.preventDefault();
+  var newArray = selectSort(arrayCards);
+  var row2 = document.getElementById("row2");
+  row2.innerHTML = "";
+  for (var i = 0; i < newArray.length; i++) {
+    //creo columna
+    let col = document.createElement("div");
+    col.classList = "col-1.9 pl-2";
+    //creo carta
+    let card = document.createElement("div");
+    card.classList.add("bg-white", "card");
+    //creo estructura head, body, footer de la carta
+    //footer
+    let div1 = document.createElement("div");
+    div1.classList.add("justify-content-start", "ml-1", "header");
+    var pHeader = document.createElement("p");
+    pHeader.id = "header";
+    pHeader.innerHTML = newArray[i][0];
+    div1.appendChild(pHeader);
+    card.appendChild(div1);
+    //body
+    let div2 = document.createElement("div");
+    div2.classList.add(
+      "d-flex",
+      "justify-content-center",
+      "font-weight-bold",
+      "body"
+    );
+    var pBody = document.createElement("p");
+    pBody.id = "body";
+    pBody.innerHTML = "<b>" + newArray[i][1] + "</b>";
+    div2.appendChild(pBody);
+    card.appendChild(div2);
+    //footer
+    let div3 = document.createElement("div");
+    div3.classList.add("d-flex", "justify-content-end", "mr-1", "footer");
+    let subDiv = document.createElement("div");
+    subDiv.classList.add("f");
+    var pFooter = document.createElement("p");
+    pFooter.id = "footer";
+    pFooter.innerHTML = newArray[i][0];
+    subDiv.appendChild(pFooter);
+    div3.appendChild(subDiv);
+    card.appendChild(div3);
+    //Si es corazon o diamante coloreo en rojo
+    if (newArray[i][0] == "♥" || newArray[i][0] == "♦") {
+      pHeader.style.color = "red";
+      pFooter.style.color = "red";
+    }
+    //agrego carta a la columna
+    col.appendChild(card);
+    //agrego columna a la fila
+    row2.append(col);
+  }
 });
