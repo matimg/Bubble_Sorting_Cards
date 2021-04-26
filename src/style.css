@@ -19,3 +19,10 @@
 .f {
   transform: rotate(180deg);
 }
+
+.alertDisplay {
+  display: none;
+  text-align: center;
+  width: 20%;
+  margin-top: 20px;
+}
