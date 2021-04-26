@@ -14,6 +14,19 @@ function dibujarCarta(icono, numero) {
   //creo carta
   let card = document.createElement("div");
   card.classList.add("bg-white", "card");
+  //Cambio numeros por letras
+  if (numero == 1) {
+    numero = "A";
+  }
+  if (numero == 11) {
+    numero = "J";
+  }
+  if (numero == 12) {
+    numero = "Q";
+  }
+  if (numero == 13) {
+    numero = "K";
+  }
   //creo estructura head, body, footer de la carta
   //footer
   let div1 = document.createElement("div");
@@ -60,7 +73,7 @@ function dibujarCarta(icono, numero) {
 var arrayCards = [];
 let btnDraw = document.getElementById("btn-draw");
 var icons = ["♦", "♥", "♠", "♣"];
-var numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, "K", "Q", "J", "A"];
+var numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 8, 9, 10, 11, 12, 13];
 btnDraw.addEventListener("click", function(event) {
   event.preventDefault();
   arrayCards = [];
@@ -99,21 +112,10 @@ const bubbleSort = arr => {
     let index = 0;
     while (index < wall) {
       //comparar las posiciones adyacentes, si la correcta es más grande, tenemos que intercambiar
-      if (
-        arr[index][1] == "K" ||
-        arr[index][1] == "Q" ||
-        arr[index][1] == "J" ||
-        arr[index][1] == "A"
-      ) {
+      if (arr[index][1] > arr[index + 1][1]) {
         let aux = arr[index];
         arr[index] = arr[index + 1];
         arr[index + 1] = aux;
-      } else {
-        if (arr[index][1] > arr[index + 1][1]) {
-          let aux = arr[index];
-          arr[index] = arr[index + 1];
-          arr[index + 1] = aux;
-        }
       }
 
       index++;
@@ -127,21 +129,10 @@ const selectSort = arr => {
   let min = 0;
   while (min < arr.length - 1) {
     for (let i = min + 1; i <= arr.length - 1; i++) {
-      if (
-        arr[min][1] == "K" ||
-        arr[min][1] == "Q" ||
-        arr[min][1] == "J" ||
-        arr[min][1] == "A"
-      ) {
+      if (arr[min][1] > arr[i][1]) {
         let aux = arr[min];
         arr[min] = arr[i];
         arr[i] = aux;
-      } else {
-        if (arr[min][1] > arr[i][1]) {
-          let aux = arr[min];
-          arr[min] = arr[i];
-          arr[i] = aux;
-        }
       }
     }
     min++;
